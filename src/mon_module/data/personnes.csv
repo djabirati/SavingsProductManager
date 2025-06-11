@@ -1,4 +1,4 @@
-nom,age,revenu_annuel,loyer,depenses_mensuelles,versement_mensuel_utilisateur,objectif,duree
+nom,age,revenu_annuel,loyer,depenses_mensuelles,versement_mensuel_utilisateur,objectif,duree_epargne
 Alice,22,21000,400,300,395.0,186000.0,36
 Bob,35,32000,800,500,545.0,104000.0,6
 Claire,28,28000,750,700,823.0,139000.0,6

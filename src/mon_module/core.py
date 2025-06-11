@@ -1,23 +1,58 @@
 import pandas as pd
-import numpy as np
+from typing import List
+from .models.personne import Personne
+from .models.epargne import Epargne
 
-def nettoyer_donnees(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Nettoie un DataFrame en traitant les valeurs manquantes et en convertissant
-    les types de colonnes spécifiques.
-    """
-    df_propre = df.copy()
-    df_propre.replace("None", np.nan, inplace=True)
 
-    colonnes_float = ['versement_mensuel_utilisateur', 'objectif']
-    colonnes_int = ['age', 'revenu_annuel', 'loyer', 'depenses_mensuelles', 'duree']
+def import_personnes(fichier: str) -> List[Personne]:
 
     try:
-        for col in colonnes_float:
-            df_propre[col] = pd.to_numeric(df_propre[col], errors='coerce')
-        for col in colonnes_int:
-            df_propre[col] = pd.to_numeric(df_propre[col], errors='coerce').astype('Int64')
-    except KeyError as e:
-        raise ValueError(f"Erreur de format : La colonne {e} est introuvable dans le fichier.")
+        if fichier.endswith('.csv'):
+            df = pd.read_csv(fichier)
+        elif fichier.endswith('.xlsx'):
+            df = pd.read_excel(fichier)
+        else:
+            df = pd.read_csv(fichier, sep='\t')
 
-    return df_propre
+        personnes = []
+        for _, row in df.iterrows():
+            personnes.append(Personne(**row.to_dict()))
+
+        print(f" {len(personnes)} personnes importées avec succès depuis '{fichier}'.")
+        return personnes
+
+    except FileNotFoundError:
+        print(f"Erreur : Le fichier '{fichier}' n'a pas été trouvé.")
+        return []
+    except Exception as e:
+        print(f"Une erreur est survenue lors de l'import des personnes : {e}")
+        return []
+
+
+def import_epargnes(fichier: str) -> List[Epargne]:
+
+    try:
+        na_vals = ["None", "null", ""]
+        if fichier.endswith('.csv'):
+            df = pd.read_csv(fichier, na_values=na_vals)
+        elif fichier.endswith('.xlsx'):
+            df = pd.read_excel(fichier, na_values=na_vals)
+        else:
+            df = pd.read_csv(fichier, sep='\t', na_values=na_vals)
+
+        epargnes = []
+        for _, row in df.iterrows():
+            data = row.to_dict()
+            if pd.isna(data.get('versement_max')):
+                data['versement_max'] = None
+            epargnes.append(Epargne(**data))
+
+        print(f"{len(epargnes)} produits d'épargne importés avec succès depuis '{fichier}'.")
+        return epargnes
+
+    except FileNotFoundError:
+        print(f"Erreur : Le fichier '{fichier}' n'a pas été trouvé.")
+        return []
+    except Exception as e:
+        print(f"Une erreur est survenue lors de l'import des épargnes : {e}")
+        return []

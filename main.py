@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from src.mon_module.core import nettoyer_donnees
+from src.mon_module.core import import_epargnes, import_personnes
 from src.mon_module.models.epargne import Epargne
 from src.mon_module.models.personne import Personne
 from src.mon_module.utils import calcul_interets_composes
@@ -30,7 +30,6 @@ def main():
         print(df_nettoye.head())
         print("\n--- Types de données après ---")
         print(df_nettoye.dtypes)
-        df_nettoye.to_csv("data/cleaned_personne.csv", index=False)
     except ValueError as e:
         print(f"\nERREUR lors du nettoyage : {e}")
     """
@@ -56,6 +55,17 @@ def main():
     print(livret_a)
     interet = calcul_interets_composes(1000, 0.10, 3)
     print(f"Montant calculé : {interet:.2f} €")
+
+    fichier_personnes = 'src/mon_module/data/personnes.csv'
+    fichier_epargnes = 'src/mon_module/data/epargnes.csv'
+    liste_personnes = import_personnes(fichier_personnes)
+    liste_epargnes = import_epargnes(fichier_epargnes)
+    print("\n Personne importée:")
+    for personne in liste_personnes:
+        print(personne)
+    print("\n Epargne importée:")
+    for epargne in liste_epargnes:
+        print(epargne)
 
 
 if __name__ == "__main__":
