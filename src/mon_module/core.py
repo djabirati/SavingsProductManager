@@ -1,10 +1,16 @@
 import pandas as pd
 from typing import List
+
+from .decorateur import decorateur_suggestion
 from .models.personne import Personne
 from .models.epargne import Epargne
 from .models.resultat import ResultatEpargne
-from .utils import calcul_interets_composes
 
+def calcul_interets_composes(versement_annuel: float, taux_annuel: float, duree_annees: int) -> float:
+    montant_final = 0.0
+    for _ in range(duree_annees):
+        montant_final = (montant_final + versement_annuel) * (1 + taux_annuel)
+    return montant_final
 
 def import_personnes(fichier: str) -> List[Personne]:
 
@@ -59,6 +65,7 @@ def import_epargnes(fichier: str) -> List[Epargne]:
         print(f"Une erreur est survenue lors de l'import des épargnes : {e}")
         return []
 
+@decorateur_suggestion
 def suggestion_epargne(personne: Personne,
                        epargnes: List[Epargne],
                        objectif: float,

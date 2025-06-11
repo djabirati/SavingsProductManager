@@ -1,9 +1,9 @@
 import pandas as pd
 import os
-from src.mon_module.core import import_epargnes, import_personnes, suggestion_epargne
+from src.mon_module.core import import_epargnes, import_personnes, suggestion_epargne, calcul_interets_composes
 from src.mon_module.models.epargne import Epargne
 from src.mon_module.models.personne import Personne
-from src.mon_module.utils import calcul_interets_composes
+
 
 
 def main():
