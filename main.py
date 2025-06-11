@@ -49,5 +49,13 @@ def main():
     for res in suggestions:
         print(res.afficher())
 
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.width', 0)
+    pd.set_option('display.max_colwidth', None)
+
+    df_suggestions = pd.concat([s.to_dataframe() for s in suggestions], ignore_index=True)
+    print(df_suggestions)
+
+
 if __name__ == "__main__":
     main()
