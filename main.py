@@ -3,6 +3,7 @@ import os
 from src.mon_module.core import nettoyer_donnees
 from src.mon_module.models.epargne import Epargne
 from src.mon_module.models.personne import Personne
+from src.mon_module.utils import calcul_interets_composes
 
 
 def main():
@@ -53,6 +54,8 @@ def main():
 
     print(personne_test)
     print(livret_a)
+    interet = calcul_interets_composes(1000, 0.10, 3)
+    print(f"Montant calculé : {interet:.2f} €")
 
 
 if __name__ == "__main__":
