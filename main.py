@@ -1,38 +1,12 @@
 import pandas as pd
 import os
-from src.mon_module.core import import_epargnes, import_personnes
+from src.mon_module.core import import_epargnes, import_personnes, suggestion_epargne
 from src.mon_module.models.epargne import Epargne
 from src.mon_module.models.personne import Personne
 from src.mon_module.utils import calcul_interets_composes
 
 
 def main():
-    """
-    Fonction principale pour charger, nettoyer et afficher les données.
-
-    chemin_fichier = os.path.join("data", "personnes.csv")
-
-    try:
-        df_original = pd.read_csv(chemin_fichier)
-    except FileNotFoundError:
-        print(f"ERREUR : Le fichier {chemin_fichier} n'a pas été trouvé. Vérifiez le chemin.")
-        return
-
-    print("---  DataFrame AVANT nettoyage ---")
-    print(df_original.head())
-    print("\n--- Types de données avant ---")
-    print(df_original.dtypes)
-
-    try:
-        df_nettoye = nettoyer_donnees(df_original)
-
-        print("\n\n---  DataFrame APRÈS nettoyage ---")
-        print(df_nettoye.head())
-        print("\n--- Types de données après ---")
-        print(df_nettoye.dtypes)
-    except ValueError as e:
-        print(f"\nERREUR lors du nettoyage : {e}")
-    """
     personne_test = Personne(
         nom="Alice Dupont",
         age=30,
@@ -66,7 +40,14 @@ def main():
     print("\n Epargne importée:")
     for epargne in liste_epargnes:
         print(epargne)
-
+    suggestions = suggestion_epargne(
+        personne=personne_test,
+        epargnes=liste_epargnes,
+        objectif=personne_test.objectif,
+        duree=personne_test.duree_epargne
+    )
+    for res in suggestions:
+        print(res.afficher())
 
 if __name__ == "__main__":
     main()
