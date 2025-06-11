@@ -1,5 +1,8 @@
+from typing import Optional
+
+
 class Epargne:
-    def __init__(self, nom, taux_interet, fiscalite, duree_min, versement_max):
+    def __init__(self, nom, taux_interet, fiscalite, duree_min, versement_max: Optional[float] = None):
         self.nom = nom
         self.taux_interet = taux_interet
         self.fiscalite = fiscalite
